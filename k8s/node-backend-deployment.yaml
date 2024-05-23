@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-backend
+  template:
+    metadata:
+      labels:
+        app: node-backend
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - node-backend
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: node-backend
+        image: matejkratochviljumpshot/node-backend:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MONGO_URL
+          value: "mongodb://mongo:27017/quotesdb"
