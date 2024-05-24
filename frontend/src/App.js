@@ -11,6 +11,11 @@ function App() {
     fetchTotalRatings();
   }, []);
 
+  const generateDummy = async () => {
+    const response = await fetch('http://localhost:5000/generateDummy');
+    await response.json();
+  };
+
   const fetchQuote = async () => {
     const response = await fetch('http://localhost:5000/returnQuote');
     const data = await response.json();
@@ -40,6 +45,8 @@ function App() {
   return (
     <div className="App">
       <h1>Quotes Application</h1>
+      <button onClick={generateDummy}>Generate 10 dummy quotes</button>
+      <hr></hr>
       <button onClick={fetchQuote}>Get Quote</button>
       <div>
         <span>Total Likes: {totalLikes}</span>

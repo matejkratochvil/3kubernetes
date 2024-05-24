@@ -24,7 +24,7 @@ spec:
             topologyKey: "kubernetes.io/hostname"
       containers:
       - name: node-backend
-        image: matejkratochviljumpshot/node-backend:latest
+        image: chlupnoha/node-backend:latest
         ports:
         - containerPort: 5000
         env:
