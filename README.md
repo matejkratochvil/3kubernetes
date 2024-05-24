@@ -47,6 +47,9 @@ kubectl apply -f k8s/node-backend-deployment.yaml
 kubectl apply -f k8s/node-backend-service.yaml
 kubectl apply -f k8s/mongo-deployment.yaml
 kubectl apply -f k8s/mongo-service.yaml
+kubectl apply -f k8s/nginx-configmap.yaml
+kubectl apply -f k8s/nginx-deployment.yaml
+kubectl apply -f k8s/nginx-service.yaml
 ```
 
 ## Verify distribution across nodes

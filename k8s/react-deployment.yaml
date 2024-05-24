@@ -27,3 +27,6 @@ spec:
         image: chlupnoha/react-frontend:latest
         ports:
         - containerPort: 80
+#        env:
+#        - name: BACKEND_URL
+#          value: "/api"

@@ -3,10 +3,12 @@ const { json } = require('express');
 const { connect, Schema, model } = require('mongoose');
 const cors = require('cors');
 
-
 // Connection URI
-const uri = 'mongodb://mongo:27017/quotes'; // Replace with your MongoDB URI
+
+//const uri = 'mongodb://mongo:27017/quotes'; // Replace with your MongoDB URI
 // const uri = 'mongodb://localhost:27017/quotes'; // Replace with your MongoDB URI
+const uri = process.env.MONGO_URL;
+
 
 // Connect to MongoDB
 connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -46,28 +48,30 @@ function generateRandomQuotes(count) {
   return quotes;
 }
 
-app.get('/generateDummy', async (req, res) => {
+const prefix = "/api";
+
+app.get(prefix + '/generateDummy', async (req, res) => {
   const numberOfQuotesToGenerate = 10;
   const randomQuotes = generateRandomQuotes(numberOfQuotesToGenerate);
   const savedQuotes = await Quote.insertMany(randomQuotes);
   res.json(savedQuotes)
 });
 
-app.get('/returnQuote', async (req, res) => {
+app.get(prefix + '/returnQuote', async (req, res) => {
   const count = await Quote.countDocuments();
   const random = Math.floor(Math.random() * count);
   const quote = await Quote.findOne().skip(random);
   res.json(quote);
 });
 
-app.post('/updateQuote', async (req, res) => {
+app.post(prefix + '/updateQuote', async (req, res) => {
   const { id, rating } = req.body;
   const update = rating === 'liked' ? { $inc: { likes: 1 } } : { $inc: { dislikes: 1 } };
   await Quote.findByIdAndUpdate(id, update);
   res.sendStatus(200);
 });
 
-app.get('/returnTotalRatings', async (req, res) => {
+app.get(prefix + '/returnTotalRatings', async (req, res) => {
   const likes = await Quote.aggregate([{ $group: { _id: null, totalLikes: { $sum: '$likes' } } }]);
   const dislikes = await Quote.aggregate([{ $group: { _id: null, totalDislikes: { $sum: '$dislikes' } } }]);
   res.json({
