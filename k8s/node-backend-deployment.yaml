@@ -20,7 +20,8 @@ spec:
               - key: app
                 operator: In
                 values:
-                - node-backend
+                - react-frontend
+                - mongo
             topologyKey: "kubernetes.io/hostname"
       containers:
       - name: node-backend
