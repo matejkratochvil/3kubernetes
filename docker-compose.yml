@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: chlupnoha/node-backend:latest
+    ports:
+      - "5000:5000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: chlupnoha/react-frontend:latest
+    ports:
+      - "3001:80"
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
+//const uri = process.env.BACKEND_URL;
+const uri = "/api";
+
 function App() {
   const [quote, setQuote] = useState(null);
   const [totalLikes, setTotalLikes] = useState(0);
@@ -11,22 +14,27 @@ function App() {
     fetchTotalRatings();
   }, []);
 
+  const generateDummy = async () => {
+    const response = await fetch(uri + '/generateDummy');
+    await response.json();
+  };
+
   const fetchQuote = async () => {
-    const response = await fetch('http://localhost:5000/returnQuote');
+    const response = await fetch(uri + '/returnQuote');
     const data = await response.json();
     setQuote(data);
     setShowModal(true);
   };
 
   const fetchTotalRatings = async () => {
-    const response = await fetch('http://localhost:5000/returnTotalRatings');
+    const response = await fetch(uri + '/returnTotalRatings');
     const data = await response.json();
     setTotalLikes(data.totalLikes);
     setTotalDislikes(data.totalDislikes);
   };
 
   const rateQuote = async (rating) => {
-    await fetch('http://localhost:5000/updateQuote', {
+    await fetch(uri + '/updateQuote', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -40,6 +48,8 @@ function App() {
   return (
     <div className="App">
       <h1>Quotes Application</h1>
+      <button onClick={generateDummy}>Generate 10 dummy quotes</button>
+      <hr></hr>
       <button onClick={fetchQuote}>Get Quote</button>
       <div>
         <span>Total Likes: {totalLikes}</span>
